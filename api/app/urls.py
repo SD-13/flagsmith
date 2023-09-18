@@ -1,9 +1,8 @@
 import importlib
 
 from django.conf import settings
-from django.urls import include, re_path
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path, re_path
 from django.views.generic.base import TemplateView
 
 from users.views import password_reset_redirect

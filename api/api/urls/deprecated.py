@@ -11,6 +11,8 @@ urlpatterns = [
         r"^identities/(?P<identifier>[-\w@%.]+)/traits/(?P<trait_key>[-\w.]+)$",
         SDKTraitsDeprecated.as_view(),
     ),
-    re_path(r"^identities/(?P<identifier>[-\w@%.]+)/", SDKIdentitiesDeprecated.as_view()),
+    re_path(
+        r"^identities/(?P<identifier>[-\w@%.]+)/", SDKIdentitiesDeprecated.as_view()
+    ),
     re_path(r"^flags/(?P<identifier>[-\w@%.]+)$", SDKFeatureStates.as_view()),
 ]

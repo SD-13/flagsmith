@@ -1,6 +1,5 @@
 from app_analytics.views import SDKAnalyticsFlags, SelfHostedTelemetryAPIView
-from django.urls import re_path
-from django.urls import include
+from django.urls import include, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import authentication, permissions, routers
@@ -34,7 +33,9 @@ urlpatterns = [
     re_path(r"^projects/", include("projects.urls"), name="projects"),
     re_path(r"^environments/", include("environments.urls"), name="environments"),
     re_path(r"^features/", include("features.urls"), name="features"),
-    re_path(r"^multivariate/", include("features.multivariate.urls"), name="multivariate"),
+    re_path(
+        r"^multivariate/", include("features.multivariate.urls"), name="multivariate"
+    ),
     re_path(r"^segments/", include("segments.urls"), name="segments"),
     re_path(r"^users/", include("users.urls")),
     re_path(r"^e2etests/", include("e2etests.urls")),

@@ -1,4 +1,4 @@
-from django.urls import include, re_path, path
+from django.urls import include, path, re_path
 from rest_framework_nested import routers
 
 from audit.views import ProjectAuditLogViewSet
