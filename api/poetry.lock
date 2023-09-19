@@ -1088,23 +1088,19 @@ typing_extensions = ">=3.6,<5"
 
 [[package]]
 name = "django-trench"
-version = "0.3.1"
+version = "0.2.3"
 description = "REST Multi-factor authentication package for Django"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-trench-0.3.1.tar.gz", hash = "sha256:ee667681b62c3ab057754419e15c68df93556e586781e4382277ec094e2bc2aa"},
-    {file = "django_trench-0.3.1-py3-none-any.whl", hash = "sha256:1bca8eec1900187f8e5b7b6c63adfa5714258a41d8bdb83d1bee12645cc0cadf"},
+    {file = "django-trench-0.2.3.tar.gz", hash = "sha256:63e189a057c45198d178ea79337e690250b484fcd8ff2057c9fd4b3699639853"},
 ]
 
 [package.dependencies]
-pyotp = ">=2.6.0"
-smsapi-client = ">=2.4.5"
-twilio = ">=6.56.0"
-yubico-client = ">=1.13.0"
-
-[package.extras]
-docs = ["sphinx (>=1.4)", "sphinx-rtd-theme"]
+pyotp = ">=2.2.6"
+smsapi-client = ">=2.2.5"
+twilio = ">=6.18.1"
+yubico-client = ">=1.10.0"
 
 [[package]]
 name = "djangorestframework"
@@ -3880,4 +3876,4 @@ requests = ">=2.7,<3.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "c35ca915e18a2189080e757bbc60c63472dede591fe8a8f2ae2a94eaec5e275d"
+content-hash = "e6cc8ddf09b351fde97dbc947be2d4e4ec177c9ffa121a858eea95b44935e8eb"
