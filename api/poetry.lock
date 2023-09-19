@@ -841,17 +841,17 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-admin-sso"
-version = "4.0.0"
+version = "5.1.0"
 description = "Django SSO solution"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "django-admin-sso-4.0.0.tar.gz", hash = "sha256:1083b49f8e602f3ad2eade0171593305c2ade41c0ab90e1da425d2792825afa1"},
-    {file = "django_admin_sso-4.0.0-py2.py3-none-any.whl", hash = "sha256:4e5a9deec5bd19aac452601c2269e99e332058e21ffde2db59d92729732d8918"},
+    {file = "django-admin-sso-5.1.0.tar.gz", hash = "sha256:3cf628f2b6e2364f6da50433cc0d22c47729468990956f29498fb1cafb175712"},
+    {file = "django_admin_sso-5.1.0-py2.py3-none-any.whl", hash = "sha256:cecbfc19a500d9badfa88a123ba89c22a49432a6a654ef4cd2fdf0049cbcceef"},
 ]
 
 [package.dependencies]
-Django = ">=2.2"
+Django = ">=3.2"
 oauth2client = ">=1.2"
 
 [[package]]
@@ -3876,4 +3876,4 @@ requests = ">=2.7,<3.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "e6cc8ddf09b351fde97dbc947be2d4e4ec177c9ffa121a858eea95b44935e8eb"
+content-hash = "9805edf07b5a1c18e55f1c868b0691c25610fcba70d088562317095e6ab91261"
