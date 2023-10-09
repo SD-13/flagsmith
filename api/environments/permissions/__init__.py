@@ -1,1 +1,4 @@
-default_app_config = "environments.permissions.apps.EnvironmentPermissionsConfig"
+import django
+
+if django.VERSION < (3, 2):
+    default_app_config = "environments.permissions.apps.EnvironmentPermissionsConfig"
