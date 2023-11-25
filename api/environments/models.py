@@ -13,11 +13,12 @@ from django.core.cache import caches
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_lifecycle import (
     AFTER_CREATE,
     AFTER_SAVE,
     AFTER_UPDATE,
+    BEFORE_UPDATE,
     LifecycleModel,
     hook,
 )
@@ -41,6 +42,7 @@ from environments.dynamodb import (
 from environments.exceptions import EnvironmentHeaderNotPresentError
 from environments.managers import EnvironmentManager
 from features.models import Feature, FeatureSegment, FeatureState
+from features.versioning.exceptions import FeatureVersioningError
 from metadata.models import Metadata
 from segments.models import Segment
 from util.mappers import map_environment_to_environment_document
@@ -124,26 +126,23 @@ class Environment(
 
     objects = EnvironmentManager()
 
+    use_v2_feature_versioning = models.BooleanField(default=False)
+
     class Meta:
         ordering = ["id"]
 
     @hook(AFTER_CREATE)
     def create_feature_states(self):
-        features = self.project.features.all()
-        for feature in features:
-            FeatureState.objects.create(
-                feature=feature,
-                environment=self,
-                identity=None,
-                enabled=False
-                if self.project.prevent_flag_defaults
-                else feature.default_enabled,
-            )
+        FeatureState.create_initial_feature_states_for_environment(environment=self)
 
     @hook(AFTER_UPDATE)
     def clear_environment_cache(self):
         # TODO: this could rebuild the cache itself (using an async task)
         environment_cache.delete(self.initial_value("api_key"))
+
+    @hook(BEFORE_UPDATE, when="use_v2_feature_versioning", was=True, is_now=False)
+    def validate_use_v2_feature_versioning(self):
+        raise FeatureVersioningError("Cannot revert from v2 feature versioning.")
 
     def __str__(self):
         return "Project %s - Environment %s" % (self.project.name, self.name)
@@ -163,7 +162,7 @@ class Environment(
         clone.api_key = api_key if api_key else create_hash()
         clone.save()
 
-        # Since identities are closely tied to the enviroment
+        # Since identities are closely tied to the environment
         # it does not make much sense to clone them, hence
         # only clone feature states without identities
         for feature_state in self.feature_states.filter(identity=None):
@@ -203,13 +202,13 @@ class Environment(
                     "heap_config",
                     "dynatrace_config",
                 )
-                environment = (
-                    cls.objects.select_related(*select_related_args)
-                    .filter(Q(api_key=api_key) | Q(api_keys__key=api_key))
-                    .distinct()
-                    .defer("description")
-                    .get()
+                base_qs = cls.objects.select_related(*select_related_args).defer(
+                    "description"
                 )
+                qs_for_embedded_api_key = base_qs.filter(api_key=api_key)
+                qs_for_fk_api_key = base_qs.filter(api_keys__key=api_key)
+
+                environment = qs_for_embedded_api_key.union(qs_for_fk_api_key).get()
                 environment_cache.set(
                     api_key, environment, timeout=settings.ENVIRONMENT_CACHE_SECONDS
                 )

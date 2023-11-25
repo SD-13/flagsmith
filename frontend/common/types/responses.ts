@@ -71,6 +71,21 @@ export type Project = {
   environments: Environment[]
 }
 
+export type LaunchDarklyProjectImport = {
+  id: number
+  created_by: string
+  created_at: string
+  updated_at: string
+  completed_at: string
+  status: {
+      requested_environment_count: number
+      requested_flag_count: number
+      result: string || null
+      error_message: string || null
+  },
+  project: number
+}
+
 export type User = {
   id: number
   email: string
@@ -280,6 +295,19 @@ export type Account = {
   is_superuser: boolean
 }
 
+export type Role = {
+  id: number
+  name: string
+  description?: string
+  organisation: number
+}
+
+export type RolePermissionUser = {
+  user: number
+  role: number
+  id: number
+}
+
 export type Res = {
   segments: PagedResponse<Segment>
   segment: Segment
@@ -339,10 +367,16 @@ export type Res = {
     }
     value: string
   }
+  roles: Role[]
+  rolePermission: { id: string }
 
   projectFlags: PagedResponse<ProjectFlag>
   identityFeatureStates: IdentityFeatureState[]
+  rolesPermissionUsers: RolePermissionUser
+  rolePermissionGroup: { id: string }
   getSubscriptionMetadata: { id: string }
   environment: Environment
+  launchDarklyProjectImport: LaunchDarklyProjectImport
+  launchDarklyProjectsImport: LaunchDarklyProjectImport[]
   // END OF TYPES
 }
